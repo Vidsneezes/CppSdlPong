@@ -99,14 +99,6 @@ int main(int argc, char* argv[])
 		SDL_RenderPresent(renderer);
 	}
 
-
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
-	{
-		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
-		return 1;
-	}
-
-
 	//Clean up
 	//Free sprite texture
 	backgroundSprite.free();
