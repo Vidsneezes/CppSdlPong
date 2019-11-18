@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	IMG_Init(IMG_INIT_PNG);
-	bitmapTex = IMG_LoadTexture(renderer, "res/sampleImage.png");
+	bitmapTex = IMG_LoadTexture(renderer, "res/default.png");
 
 	while (1)
 	{
