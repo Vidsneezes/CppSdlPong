@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 	//Load textures
 	paddleTexture = loadTexture("res/paddle.png", renderer);
 
-
+	//Create Sprites
 	Sprite backgroundSprite(0, 0, "res/background.png", renderer);
 	Sprite player_1(40, 20, paddleTexture);
 	Sprite computer_1(480 - 40 - 27, 20, paddleTexture);
@@ -41,6 +41,9 @@ int main(int argc, char* argv[])
 	double deltaTime = 0;
 
 	double ballVelX = 60.0, ballVelY = 60.0;
+
+	int upperLevelLimit = 20;
+	int lowerLevelLimit = 320 - 78 - 20; // window height - paddle image height - pad
 
 	while (!quit)
 	{
@@ -62,6 +65,7 @@ int main(int argc, char* argv[])
 
 		//Logic
 		const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
+		//check input and move player
 		if (currentKeyStates[SDL_SCANCODE_DOWN])
 		{
 			player_1.y += deltaTime * 100;
@@ -71,7 +75,17 @@ int main(int argc, char* argv[])
 			player_1.y -= deltaTime * 100;
 		}
 
+		//limit player movement 
+		if (player_1.y > lowerLevelLimit)
+		{
+			player_1.y = lowerLevelLimit;
+		}
+		else if (player_1.y < upperLevelLimit)
+		{
+			player_1.y = upperLevelLimit;
+		}
 
+		//Ball physics
 		ball.x += ballVelX * deltaTime;
 		ball.y += ballVelY * deltaTime;
 
