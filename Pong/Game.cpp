@@ -1,6 +1,5 @@
-#include <iostream>
-#include <SDL.h>
-#include <SDL_image.h>
+#include "Pong.h"
+#include "Sprite.h"
 
 //Screen dimensions
 
@@ -12,7 +11,7 @@ int main(int argc, char* argv[])
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
 
-	SDL_Texture *backgroundTexture = NULL;
+
 	SDL_Texture *paddleTexture = NULL;
 	SDL_Texture *ballTexture = NULL;
 
@@ -25,24 +24,23 @@ int main(int argc, char* argv[])
 
 	IMG_Init(IMG_INIT_PNG);
 	
-	//load textures
-	backgroundTexture = loadTexture("res/background.png", renderer);
+	//Load textures
 	paddleTexture = loadTexture("res/paddle.png", renderer);
-	ballTexture = loadTexture("res/ball.png", renderer);
+
+
+	Sprite backgroundSprite(0, 0, "res/background.png", renderer);
+	Sprite player_1(40, 20, paddleTexture);
+	Sprite computer_1(480 - 40 - 27, 20, paddleTexture);
+	Sprite ball(480 / 2, 320 / 2, "res/ball.png", renderer);
 
 	bool quit = false;
 	SDL_Event e;
-
-	double playerY = 0;
 
 	Uint64 NOW = SDL_GetPerformanceCounter();
 	Uint64 LAST = 0;
 	double deltaTime = 0;
 
-
-	double ballVelX = 60;
-	double ballVelY = 40;
-	double ballX = 480/2, ballY = 320/2;
+	double ballVelX = 60.0, ballVelY = 60.0;
 
 	while (!quit)
 	{
@@ -66,21 +64,24 @@ int main(int argc, char* argv[])
 		const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
 		if (currentKeyStates[SDL_SCANCODE_DOWN])
 		{
-			playerY += deltaTime * 100;
+			player_1.y += deltaTime * 100;
 		}
 		else if (currentKeyStates[SDL_SCANCODE_UP])
 		{
-			playerY -= deltaTime * 100;
+			player_1.y -= deltaTime * 100;
 		}
-		ballX += ballVelX * deltaTime;
-		ballY += ballVelY * deltaTime;
+
+
+		ball.x += ballVelX * deltaTime;
+		ball.y += ballVelY * deltaTime;
 
 		// Render
 		SDL_RenderClear(renderer);
-		renderTexture(backgroundTexture, renderer, 0, 0);
-		renderTexture(paddleTexture, renderer, 40, playerY);
-		renderTexture(paddleTexture, renderer, 480-40-27, 20);
-		renderTexture(ballTexture, renderer, ballX, ballY);
+		backgroundSprite.render(renderer);
+		player_1.render(renderer);
+		computer_1.render(renderer);
+		ball.render(renderer);
+
 		SDL_RenderPresent(renderer);
 	}
 
@@ -93,7 +94,10 @@ int main(int argc, char* argv[])
 
 
 	//Clean up
-	SDL_DestroyTexture(backgroundTexture);
+	//Free sprite texture
+	backgroundSprite.free();
+	ball.free();
+	//Destroy textures
 	SDL_DestroyTexture(paddleTexture);
 	IMG_Quit();
 	SDL_DestroyRenderer(renderer);
