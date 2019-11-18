@@ -5,14 +5,16 @@
 //Screen dimensions
 
 SDL_Texture* loadTexture(const std::string &file, SDL_Renderer * ren);
-void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y);
+void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, double x, double y);
 
 int main(int argc, char* argv[])
 {
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
 
-	SDL_Texture *backgroundPng = NULL;
+	SDL_Texture *backgroundTexture = NULL;
+	SDL_Texture *paddleTexture = NULL;
+	SDL_Texture *ballTexture = NULL;
 
 	int posX = 100, posY = 100, width = 480, height = 320;
 
@@ -24,19 +26,61 @@ int main(int argc, char* argv[])
 	IMG_Init(IMG_INIT_PNG);
 	
 	//load textures
-	backgroundPng = loadTexture("res/background.png", renderer);
+	backgroundTexture = loadTexture("res/background.png", renderer);
+	paddleTexture = loadTexture("res/paddle.png", renderer);
+	ballTexture = loadTexture("res/ball.png", renderer);
 
-	while (1)
+	bool quit = false;
+	SDL_Event e;
+
+	double playerY = 0;
+
+	Uint64 NOW = SDL_GetPerformanceCounter();
+	Uint64 LAST = 0;
+	double deltaTime = 0;
+
+
+	double ballVelX = 60;
+	double ballVelY = 40;
+	double ballX = 480/2, ballY = 320/2;
+
+	while (!quit)
 	{
-		SDL_Event e;
-		if (SDL_PollEvent(&e)){
-			if (e.type == SDL_QUIT){
-				break;
+		while (SDL_PollEvent(&e) != 0)
+		{
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
 			}
 		}
 
+		LAST = NOW;
+		NOW = SDL_GetPerformanceCounter();
+
+		deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceCounter()) * 10000;
+		
+		//printf("%f",deltaTime);
+
+
+		//Logic
+		const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
+		if (currentKeyStates[SDL_SCANCODE_DOWN])
+		{
+			playerY += deltaTime * 100;
+		}
+		else if (currentKeyStates[SDL_SCANCODE_UP])
+		{
+			playerY -= deltaTime * 100;
+		}
+		ballX += ballVelX * deltaTime;
+		ballY += ballVelY * deltaTime;
+
+		// Render
 		SDL_RenderClear(renderer);
-		renderTexture(backgroundPng, renderer, 0, 0);
+		renderTexture(backgroundTexture, renderer, 0, 0);
+		renderTexture(paddleTexture, renderer, 40, playerY);
+		renderTexture(paddleTexture, renderer, 480-40-27, 20);
+		renderTexture(ballTexture, renderer, ballX, ballY);
 		SDL_RenderPresent(renderer);
 	}
 
@@ -49,7 +93,8 @@ int main(int argc, char* argv[])
 
 
 	//Clean up
-	SDL_DestroyTexture(backgroundPng);
+	SDL_DestroyTexture(backgroundTexture);
+	SDL_DestroyTexture(paddleTexture);
 	IMG_Quit();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -64,11 +109,11 @@ SDL_Texture* loadTexture(const std::string &file,SDL_Renderer * ren)
 	return IMG_LoadTexture(ren, file.c_str());
 }
 
-void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y)
+void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, double x, double y)
 {
 	SDL_Rect textureRect;
-	textureRect.x = x;
-	textureRect.y = y;
+	textureRect.x = SDL_floor(x);
+	textureRect.y = SDL_floor(y);
 
 	SDL_QueryTexture(tex, NULL, NULL, &textureRect.w, &textureRect.h);
 	SDL_RenderCopy(ren, tex, NULL, &textureRect);
