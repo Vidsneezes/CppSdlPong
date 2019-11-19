@@ -10,7 +10,11 @@ public :
 
 	double x;
 	double y;
+	double velocityX;
+	double velocityY;
+
 	SDL_Texture *texture;
+	void update(double deltaTime);
 	void render(SDL_Renderer *ren);
 	void free();
 

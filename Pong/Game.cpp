@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 	Uint64 LAST = 0;
 	double deltaTime = 0;
 
-	double ballVelX = 60.0, ballVelY = 60.0;
+	double ballVelX = 2.0, ballVelY = 3.0;
 
 	int upperLevelLimit = 20;
 	int lowerLevelLimit = 320 - 78 - 20; // window height - paddle image height - pad

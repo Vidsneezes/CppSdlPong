@@ -43,3 +43,9 @@ void Sprite::free()
 		texture = NULL;
 	}
 }
+
+void Sprite::update(double deltaTime)
+{
+	x += velocityX * deltaTime;
+	y += velocityY * deltaTime;
+}
