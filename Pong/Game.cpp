@@ -65,15 +65,25 @@ int main(int argc, char* argv[])
 
 		//Logic
 		const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
+		
 		//check input and move player
 		if (currentKeyStates[SDL_SCANCODE_DOWN])
 		{
-			player_1.y += deltaTime * 100;
+			player_1.velocityY = 10;
 		}
 		else if (currentKeyStates[SDL_SCANCODE_UP])
 		{
-			player_1.y -= deltaTime * 100;
+			player_1.velocityY = -10;
 		}
+
+		//Ball physics
+		ball.velocityX = ballVelX;
+		ball.velocityY = ballVelY;
+
+		//updates
+		player_1.update(deltaTime);
+		computer_1.update(deltaTime);
+		ball.update(deltaTime);
 
 		//limit player movement 
 		if (player_1.y > lowerLevelLimit)
@@ -84,10 +94,6 @@ int main(int argc, char* argv[])
 		{
 			player_1.y = upperLevelLimit;
 		}
-
-		//Ball physics
-		ball.x += ballVelX * deltaTime;
-		ball.y += ballVelY * deltaTime;
 
 		// Render
 		SDL_RenderClear(renderer);
