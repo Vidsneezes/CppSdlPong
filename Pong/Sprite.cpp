@@ -7,6 +7,7 @@ Sprite::Sprite()
 	velocityX = 0;
 	velocityY = 0;
 	texture = NULL;
+	destroyTexture = false;
 }
 
 //Creates sprite with a unique texture
@@ -16,6 +17,8 @@ Sprite::Sprite(double i_x, double i_y, const char *ptr, SDL_Renderer *ren)
 
 	x = i_x;
 	y = i_y;
+
+	destroyTexture = true;
 
 	texture = IMG_LoadTexture(ren, ptr);
 }
@@ -43,10 +46,13 @@ void Sprite::render(SDL_Renderer *ren)
 
 void Sprite::free()
 {
-	if (texture != NULL)
+	if (destroyTexture)
 	{
-		SDL_DestroyTexture(texture);
-		texture = NULL;
+		if (texture != NULL)
+		{
+			SDL_DestroyTexture(texture);
+			texture = NULL;
+		}
 	}
 }
 

@@ -18,4 +18,7 @@ public :
 	void render(SDL_Renderer *ren);
 	void free();
 
+private :
+	bool destroyTexture;
+
 };
