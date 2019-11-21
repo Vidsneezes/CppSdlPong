@@ -33,14 +33,15 @@ int main(int argc, char* argv[])
 	Sprite computer_1(480 - 40 - 27, 20, paddleTexture);
 	Sprite ball(480 / 2, 320 / 2, "res/ball.png", renderer);
 
+	ball.velocityX = 30.0;
+	ball.velocityY = 25.0;
+
 	bool quit = false;
 	SDL_Event e;
 
-	Uint64 NOW = SDL_GetPerformanceCounter();
-	Uint64 LAST = 0;
-	double deltaTime = 0;
+	Uint32 lastTick = SDL_GetTicks();
 
-	double ballVelX = 2.0, ballVelY = 3.0;
+	double deltaTime = 0;
 
 	int upperLevelLimit = 20;
 	int lowerLevelLimit = 320 - 78 - 20; // window height - paddle image height - pad
@@ -55,13 +56,7 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		LAST = NOW;
-		NOW = SDL_GetPerformanceCounter();
-
-		deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceCounter()) * 10000;
-		
-		//printf("%f",deltaTime);
-
+		deltaTime = (SDL_GetTicks() - lastTick) / 100.0;
 
 		//Logic
 		const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
@@ -76,9 +71,6 @@ int main(int argc, char* argv[])
 			player_1.velocityY = -10;
 		}
 
-		//Ball physics
-		ball.velocityX = ballVelX;
-		ball.velocityY = ballVelY;
 
 		//updates
 		player_1.update(deltaTime);
@@ -94,6 +86,10 @@ int main(int argc, char* argv[])
 		{
 			player_1.y = upperLevelLimit;
 		}
+
+
+		//Reset ticks
+		lastTick = SDL_GetTicks();
 
 		// Render
 		SDL_RenderClear(renderer);
@@ -128,8 +124,8 @@ SDL_Texture* loadTexture(const std::string &file,SDL_Renderer * ren)
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, double x, double y)
 {
 	SDL_Rect textureRect;
-	textureRect.x = SDL_floor(x);
-	textureRect.y = SDL_floor(y);
+	textureRect.x = (double)SDL_floor(x);
+	textureRect.y = (double)SDL_floor(y);
 
 	SDL_QueryTexture(tex, NULL, NULL, &textureRect.w, &textureRect.h);
 	SDL_RenderCopy(ren, tex, NULL, &textureRect);
