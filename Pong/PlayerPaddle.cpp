@@ -29,6 +29,18 @@ void PlayerPaddle::update(double deltaTime)
 	{
 		sprite->velocityY = 0;
 	}
+
+
+	if (sprite->y > lowerLevelLimit)
+	{
+		sprite->y = lowerLevelLimit;
+	}
+	else if (sprite->y < upperLevelLimit)
+	{
+		sprite->y = upperLevelLimit;
+	}
+
+	sprite->update(deltaTime);
 }
 
 void PlayerPaddle::render(SDL_Renderer *ren)

@@ -172,9 +172,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="PlayerPaddle.cpp" />
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PlayerPaddle.h" />
     <ClInclude Include="Pong.h" />
     <ClInclude Include="Sprite.h" />
   </ItemGroup>

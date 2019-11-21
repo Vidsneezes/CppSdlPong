@@ -30,11 +30,11 @@ int main(int argc, char* argv[])
 
 	//Create Sprites
 	Sprite backgroundSprite(0, 0, "res/background.png", renderer);
-	PlayerPaddle *playerPaddle_1 = new PlayerPaddle(paddleTexture);
-	
 
-	Sprite player_1(40, 20, paddleTexture);
+	PlayerPaddle *playerPaddle_1 = new PlayerPaddle(paddleTexture);
+
 	Sprite computer_1(480 - 40 - 27, 20, paddleTexture);
+
 	Sprite ball(480 / 2, 320 / 2, "res/ball.png", renderer);
 
 	ball.velocityX = 30.0;
@@ -47,8 +47,7 @@ int main(int argc, char* argv[])
 
 	double deltaTime = 0;
 
-	int upperLevelLimit = 20;
-	int lowerLevelLimit = 320 - 78 - 20; // window height - paddle image height - pad
+
 
 	while (!quit)
 	{
@@ -64,19 +63,13 @@ int main(int argc, char* argv[])
 
 		
 		//updates
-		player_1.update(deltaTime);
+		playerPaddle_1->update(deltaTime);
+
 		computer_1.update(deltaTime);
 		ball.update(deltaTime);
 
 		//limit player movement 
-		if (player_1.y > lowerLevelLimit)
-		{
-			player_1.y = lowerLevelLimit;
-		}
-		else if (player_1.y < upperLevelLimit)
-		{
-			player_1.y = upperLevelLimit;
-		}
+	
 
 
 		//Reset ticks
@@ -85,7 +78,8 @@ int main(int argc, char* argv[])
 		// Render
 		SDL_RenderClear(renderer);
 		backgroundSprite.render(renderer);
-		player_1.render(renderer);
+
+		playerPaddle_1->render(renderer);
 		computer_1.render(renderer);
 		ball.render(renderer);
 
@@ -96,6 +90,9 @@ int main(int argc, char* argv[])
 	//Free sprite texture
 	backgroundSprite.free();
 	ball.free();
+	playerPaddle_1->destroy();
+	delete playerPaddle_1;
+	playerPaddle_1 = NULL;
 	//Destroy textures
 	SDL_DestroyTexture(paddleTexture);
 	IMG_Quit();
