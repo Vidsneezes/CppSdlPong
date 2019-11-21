@@ -68,9 +68,6 @@ int main(int argc, char* argv[])
 		computer_1.update(deltaTime);
 		ball.update(deltaTime);
 
-		//limit player movement 
-	
-
 
 		//Reset ticks
 		lastTick = SDL_GetTicks();
