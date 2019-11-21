@@ -1,5 +1,6 @@
 #include "Pong.h"
 #include "Sprite.h"
+#include "PlayerPaddle.h"
 
 //Screen dimensions
 
@@ -29,6 +30,9 @@ int main(int argc, char* argv[])
 
 	//Create Sprites
 	Sprite backgroundSprite(0, 0, "res/background.png", renderer);
+	PlayerPaddle *playerPaddle_1 = new PlayerPaddle(paddleTexture);
+	
+
 	Sprite player_1(40, 20, paddleTexture);
 	Sprite computer_1(480 - 40 - 27, 20, paddleTexture);
 	Sprite ball(480 / 2, 320 / 2, "res/ball.png", renderer);
@@ -58,20 +62,7 @@ int main(int argc, char* argv[])
 
 		deltaTime = (SDL_GetTicks() - lastTick) / 100.0;
 
-		//Logic
-		const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
 		
-		//check input and move player
-		if (currentKeyStates[SDL_SCANCODE_DOWN])
-		{
-			player_1.velocityY = 10;
-		}
-		else if (currentKeyStates[SDL_SCANCODE_UP])
-		{
-			player_1.velocityY = -10;
-		}
-
-
 		//updates
 		player_1.update(deltaTime);
 		computer_1.update(deltaTime);
