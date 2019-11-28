@@ -33,20 +33,24 @@ void Ball::update(double deltaTime)
 {
 	sprite->update(deltaTime);
 
-	if (sprite->x > worldMaxX)
+	sprite->updateBounds();
+
+	Point *_center = sprite->center;
+
+	if (_center->x > worldMaxX)
 	{
 		sprite->velocityX = -speedX;
 	}
-	else if (sprite->x < worldMinX)
+	else if (_center->x < worldMinX)
 	{
 		sprite->velocityX = speedX;
 	}
 
-	if (sprite->y > worldMaxY)
+	if (_center->y > worldMaxY)
 	{
 		sprite->velocityY = -speedY;
 	}
-	else if (sprite->y < worldMinY)
+	else if (_center->y < worldMinY)
 	{
 		sprite->velocityY = speedY;
 	}

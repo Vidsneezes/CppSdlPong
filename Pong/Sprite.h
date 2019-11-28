@@ -1,6 +1,15 @@
 #pragma once
 #include "Pong.h"
 
+class Point
+{
+public:
+	double x;
+	double y;
+
+	Point(double _x, double _y);
+};
+
 class Sprite
 {
 public :
@@ -10,15 +19,16 @@ public :
 
 	double x;
 	double y;
-	int width;
-	int height;
+	double width;
+	double height;
 	double velocityX;
 	double velocityY;
 
 	Point *center;
 
 	SDL_Texture *texture;
-	void UpdateBounds();
+	void initSize();
+	void updateBounds();
 	void update(double deltaTime);
 	void render(SDL_Renderer *ren);
 	void free();
@@ -29,3 +39,6 @@ private :
 	bool destroyTexture;
 
 };
+
+
+

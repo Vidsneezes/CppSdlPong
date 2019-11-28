@@ -1,5 +1,4 @@
 #pragma once
-#include "Pong.h"
 #include "Sprite.h"
 
 class Ball {

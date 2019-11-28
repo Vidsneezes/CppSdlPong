@@ -4,7 +4,6 @@
 #include "Ball.h"
 
 //Screen dimensions
-
 SDL_Texture* loadTexture(const std::string &file, SDL_Renderer * ren);
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, double x, double y);
 
