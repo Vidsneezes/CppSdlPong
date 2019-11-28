@@ -1,6 +1,7 @@
 #include "Pong.h"
 #include "Sprite.h"
 #include "PlayerPaddle.h"
+#include "Ball.h"
 
 //Screen dimensions
 
@@ -9,6 +10,7 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, double x, double y);
 
 int main(int argc, char* argv[])
 {
+	//Initialize Sdl variables
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
 
@@ -27,18 +29,17 @@ int main(int argc, char* argv[])
 	
 	//Load textures
 	paddleTexture = loadTexture("res/paddle.png", renderer);
+	ballTexture = loadTexture("res/ball.png", renderer);
 
 	//Create Sprites
 	Sprite backgroundSprite(0, 0, "res/background.png", renderer);
 
 	PlayerPaddle *playerPaddle_1 = new PlayerPaddle(paddleTexture);
 
+	Ball *ball = new Ball(ballTexture);
+	ball->SetSpeed(15, 15);
+
 	Sprite computer_1(480 - 40 - 27, 20, paddleTexture);
-
-	Sprite ball(480 / 2, 320 / 2, "res/ball.png", renderer);
-
-	ball.velocityX = 30.0;
-	ball.velocityY = 25.0;
 
 	bool quit = false;
 	SDL_Event e;
@@ -46,8 +47,6 @@ int main(int argc, char* argv[])
 	Uint32 lastTick = SDL_GetTicks();
 
 	double deltaTime = 0;
-
-
 
 	while (!quit)
 	{
@@ -64,9 +63,8 @@ int main(int argc, char* argv[])
 		
 		//updates
 		playerPaddle_1->update(deltaTime);
-
 		computer_1.update(deltaTime);
-		ball.update(deltaTime);
+		ball->update(deltaTime);
 
 
 		//Reset ticks
@@ -78,7 +76,7 @@ int main(int argc, char* argv[])
 
 		playerPaddle_1->render(renderer);
 		computer_1.render(renderer);
-		ball.render(renderer);
+		ball->render(renderer);
 
 		SDL_RenderPresent(renderer);
 	}
@@ -86,7 +84,9 @@ int main(int argc, char* argv[])
 	//Clean up
 	//Free sprite texture
 	backgroundSprite.free();
-	ball.free();
+	ball->destroy();
+	delete ball;
+	ball = NULL;
 	playerPaddle_1->destroy();
 	delete playerPaddle_1;
 	playerPaddle_1 = NULL;
