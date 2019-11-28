@@ -10,6 +10,8 @@ public :
 
 	double x;
 	double y;
+	int width;
+	int height;
 	double velocityX;
 	double velocityY;
 
@@ -17,6 +19,8 @@ public :
 	void update(double deltaTime);
 	void render(SDL_Renderer *ren);
 	void free();
+
+	
 
 private :
 	bool destroyTexture;

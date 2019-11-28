@@ -31,6 +31,12 @@ Sprite::Sprite(double i_x, double i_y, SDL_Texture *_texture)
 	x = i_x;
 	y = i_y;
 
+	int w, h;
+	SDL_QueryTexture(_texture, NULL, NULL, &w, &h);
+
+	width = w;
+	height = h;
+
 	texture = _texture;
 }
 
