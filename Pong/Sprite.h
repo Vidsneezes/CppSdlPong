@@ -15,7 +15,10 @@ public :
 	double velocityX;
 	double velocityY;
 
+	Point *center;
+
 	SDL_Texture *texture;
+	void UpdateBounds();
 	void update(double deltaTime);
 	void render(SDL_Renderer *ren);
 	void free();

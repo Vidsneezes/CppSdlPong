@@ -38,6 +38,9 @@ Sprite::Sprite(double i_x, double i_y, SDL_Texture *_texture)
 	height = h;
 
 	texture = _texture;
+
+	center = new Point(0, 0);
+	UpdateBounds();
 }
 
 void Sprite::render(SDL_Renderer *ren)
@@ -66,4 +69,10 @@ void Sprite::update(double deltaTime)
 {
 	x += (velocityX * deltaTime);
 	y += (velocityY * deltaTime);
+}
+
+void Sprite::UpdateBounds()
+{
+	center->x = x + ((double)width / 2);
+	center->y = y - ((double)height / 2);
 }

@@ -6,9 +6,14 @@
 class Point
 {
 public:
-	int x;
-	int y;
+	double x;
+	double y;
 
-	Point(int _x, int _y);
+	Point(double _x, double _y);
 };
 
+Point::Point(double _x, double _y)
+{
+	x = _x;
+	y = _y;
+}

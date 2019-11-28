@@ -8,12 +8,6 @@
 SDL_Texture* loadTexture(const std::string &file, SDL_Renderer * ren);
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, double x, double y);
 
-Point::Point(int _x, int _y)
-{
-	x = _x;
-	y = _y;
-}
-
 int main(int argc, char* argv[])
 {
 	//Initialize Sdl variables
